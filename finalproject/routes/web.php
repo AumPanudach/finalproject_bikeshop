@@ -14,7 +14,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Models\Order;
 
-use App\Http\Controllers\OrderDetailController;
+use App\Http\Controllers\OrderdetailController;
 use App\Models\OrderDetail;
 
 /*

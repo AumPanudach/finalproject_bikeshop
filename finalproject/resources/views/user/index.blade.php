@@ -1,82 +1,198 @@
 @extends("layouts.master")
-@section('title') Management System | ระบบจัดการการสั่งซื้อสินค้า @stop
+@section('title') BikeShop | จัดการผู้ใช้งาน @stop
 @section('content')
-<div class="container">
 
-    <style>
-        .bs_table {
-            width: 100%;
-        }
-
-        .bs_table th {
-            background-color: #f5f5f5;
-            text-align: center; 
-        }
-
-        .bs_table td {
-            border-bottom: 1px solid #ddd;
-        }
-
-        .bs_center {
-            text-align: center;
-        }
-    </style>
-
-    <h1>แสดงข้อมูลผู้ใช้</h1>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <div class="panel-title"><strong>ข้อมูลและการจัดการ</strong></div>
+<div class="container-fluid px-4">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 text-dark fw-bold">
+                <i class="fas fa-users text-primary me-2"></i>จัดการผู้ใช้งาน
+            </h1>
+            <p class="text-muted mb-0">จัดการข้อมูลผู้ใช้งานทั้งหมดในระบบ</p>
         </div>
+        <a href="{{ URL::to('user/edit') }}" class="btn btn-success rounded-pill">
+            <i class="fas fa-user-plus me-2"></i>เพิ่มผู้ใช้ใหม่
+        </a>
+    </div>
 
-        <div class="panel-body">
-            <!-- search form -->
-            <form action="{{ URL::to('user/search') }}" method="post" class="form-inline"> {{ csrf_field() }}
-                <input type="text" name="q" class="form-control" placeholder="พิมพ์ชื่อเพื่อค้นหา">
-                <button type="submit" class="btn btn-primary">ค้นหา</button>
-                <a href="{{ URL::to('user/edit') }}" class="btn btn-success pull-right">เพิ่มผู้ใช้</a>
+    <!-- Search Card -->
+    <div class="card shadow-custom border-0 mb-4">
+        <div class="card-body">
+            <form action="{{ URL::to('user/search') }}" method="post" class="row align-items-end">
+                {{ csrf_field() }}
+                <div class="col-md-8">
+                    <label for="search" class="form-label fw-semibold">ค้นหาผู้ใช้งาน</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input type="text" name="q" id="search" class="form-control" 
+                               placeholder="ป้อนชื่อผู้ใช้หรืออีเมลเพื่อค้นหา...">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="fas fa-search me-1"></i>ค้นหา
+                    </button>
+                    <a href="{{ URL::to('user') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-refresh-cw me-1"></i>รีเซ็ต
+                    </a>
+                </div>
             </form>
         </div>
+    </div>
 
-        <table class="table table-bordered bs_table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>วันที่สร้าง</th>
-                  
-                    <th>การทํางาน</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($users as $p)
-                <tr>
-                    <td>{{ $p->id }}</td>
-                    <td>{{ $p->name }}</td>
-                    <td>{{ $p->email }}</td>
-                    <td>{{ $p->created_at->format('Y-m-d') }}</td>
-                    
-                    <td class="bs_center">
-                        <a href="{{ URL::to('user/edit/'.$p->id) }}" class="btn btn-info"><i class="fa fa-edit"></i> แก้ไข</a>
-                        <a href="{{ URL::to('user/remove/'.$p->id) }}" class="btn btn-danger btn-delete" onclick="return confirm('คุณต้องการลบข้อมูลผู้ใช้หรือไม่?')"><i class="fa fa-trash"></i> ลบ</a>
-                        {{-- <script>
-                            $('.btn-delete').on('click', function() {
-                                if (confirm("คุณต้องการลบข้อมูลผู้ใช้หรือไม่?")) {
-                                    var url = "{{ URL::to('user/remove') }}" + '/' + $(this).attr('id-delete');
-                                    window.location.href = url;
-                                }
-                            });
-                        </script> --}}
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-        <div class="panel-footer">
-            <span>แสดงข้อมูลจำนวน : {{ count($users) }}</span>
+    <!-- Users Table Card -->
+    <div class="card shadow-custom border-0">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+                <i class="fas fa-list me-2"></i>รายการผู้ใช้งาน
+            </h5>
+            <span class="badge bg-primary rounded-pill">{{ count($users) }} คน</span>
         </div>
-
-        {{ $users->links() }}
+        
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width: 80px;">ID</th>
+                            <th>ชื่อผู้ใช้</th>
+                            <th>อีเมล</th>
+                            <th class="text-center" style="width: 150px;">วันที่สร้าง</th>
+                            <th class="text-center" style="width: 180px;">การจัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($users as $user)
+                        <tr>
+                            <td class="text-center">
+                                <span class="badge bg-light text-dark rounded-pill">{{ $user->id }}</span>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-circle me-3">
+                                        <i class="fas fa-user text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-semibold">{{ $user->name }}</div>
+                                        <small class="text-muted">ผู้ใช้งาน</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="text-muted">{{ $user->email }}</span>
+                            </td>
+                            <td class="text-center">
+                                <small class="text-muted">{{ $user->created_at->format('d/m/Y') }}</small>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a href="{{ URL::to('user/edit/'.$user->id) }}" 
+                                       class="btn btn-sm btn-outline-primary" 
+                                       data-bs-toggle="tooltip" title="แก้ไข">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button type="button" 
+                                            class="btn btn-sm btn-outline-danger"
+                                            data-bs-toggle="tooltip" title="ลบ"
+                                            onclick="confirmDelete('{{ $user->id }}', '{{ $user->name }}')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <div class="text-muted">
+                                    <i class="fas fa-users fs-1 mb-3"></i>
+                                    <h5>ไม่พบข้อมูลผู้ใช้งาน</h5>
+                                    <p>ยังไม่มีผู้ใช้งานในระบบ หรือไม่พบผลการค้นหา</p>
+                                    <a href="{{ URL::to('user/edit') }}" class="btn btn-primary">
+                                        <i class="fas fa-user-plus me-2"></i>เพิ่มผู้ใช้แรก
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        @if(method_exists($users, 'links'))
+        <div class="card-footer bg-light">
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="text-muted">
+                    แสดงข้อมูล {{ count($users) }} คน
+                </span>
+                {{ $users->links() }}
+            </div>
+        </div>
+        @endif
     </div>
 </div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">
+                    <i class="fas fa-exclamation-triangle text-warning me-2"></i>ยืนยันการลบ
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>คุณต้องการลบผู้ใช้งาน <strong id="userName"></strong> หรือไม่?</p>
+                <p class="text-muted mb-0">การดำเนินการนี้ไม่สามารถยกเลิกได้</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                <a href="#" id="confirmDeleteBtn" class="btn btn-danger">
+                    <i class="fas fa-trash me-2"></i>ลบผู้ใช้งาน
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 123, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-group .btn {
+    margin: 0 1px;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+</style>
+
+<script>
+function confirmDelete(userId, userName) {
+    document.getElementById('userName').textContent = userName;
+    document.getElementById('confirmDeleteBtn').href = '{{ URL::to("user/remove") }}/' + userId;
+    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+}
+
+// Initialize tooltips
+document.addEventListener('DOMContentLoaded', function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+});
+</script>
+
 @endsection

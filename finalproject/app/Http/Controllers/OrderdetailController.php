@@ -5,7 +5,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 
-class OrderdetailController extends Controller
+class OrderDetailController extends Controller
 {
     var $rp = 5;
 
