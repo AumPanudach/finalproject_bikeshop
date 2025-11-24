@@ -7,30 +7,26 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title', 'BikeShop | Premium Bicycle Parts & Accessories')</title>
     
-    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Toastr -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('vendor/toastr/build/toastr.min.css') }}">
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    @stack('styles')
     
-    <!-- Scripts -->
     <script src="{{ asset('js/jquery-3.7.0.min.js') }}"></script>
     <script src="{{ asset('js/angular.min.js') }}"></script>
     <script src="{{ asset('vendor/toastr/build/toastr.min.js') }}"></script>
 </head>
 
-<body class="bg-light">
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold fs-3" href="#">
-                <i class="fas fa-bicycle text-primary me-2"></i>
-                <span class="text-gradient">BikeShop</span>
+<body class="app-body">
+    <nav class="navbar navbar-expand-lg navbar-light app-navbar fixed-top shadow-sm">
+        <div class="container-xl">
+            <a class="navbar-brand fw-bold" href="{{ url('/') }}">
+                <span class="brand-icon me-2">
+                    <i class="fas fa-bicycle"></i>
+                </span>
+                BikeShop
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
@@ -75,12 +71,12 @@
                     @endguest
                 </ul>
 
-                <ul class="navbar-nav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
                     @if (Session::has('cart_items'))
                         <li class="nav-item">
-                            <a class="nav-link position-relative" href="{{ URL::to('/cart/view') }}">
-                                <i class="fas fa-shopping-cart"></i> ตะกร้า
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            <a class="nav-link cart-link" href="{{ URL::to('/cart/view') }}">
+                                <i class="fas fa-shopping-cart me-1"></i>ตะกร้า
+                                <span class="cart-count">
                                     {{ count(Session::get('cart_items')) }}
                                 </span>
                             </a>
@@ -101,14 +97,22 @@
                     @else
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user-circle me-1"></i>{{ Auth::user()->name }}
+                                <i class="fas fa-circle-user me-2"></i>{{ Auth::user()->name }}
                             </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>โปรไฟล์</a></li>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                <li>
+                                    <span class="dropdown-item-text small text-muted">{{ Auth::user()->email }}</span>
+                                </li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{{ route('logout') }}">
-                                    <i class="fas fa-sign-out-alt me-2"></i>ออกจากระบบ
-                                </a></li>
+                                <li>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item text-danger d-flex align-items-center gap-2">
+                                            <i class="fas fa-arrow-right-from-bracket"></i>
+                                            ออกจากระบบ
+                                        </button>
+                                    </form>
+                                </li>
                             </ul>
                         </li>
                     @endguest
@@ -117,25 +121,19 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container-fluid px-4">
-            @yield('content')
-        </div>
+    <main class="app-main">
+        @yield('content')
     </main>
 
 
-    <!-- Footer -->
-    <footer class="bg-dark text-light py-4 mt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5><i class="fas fa-bicycle text-primary me-2"></i>BikeShop</h5>
-                    <p class="mb-0">ร้านจำหน่ายอะไหล่และอุปกรณ์จักรยานคุณภาพสูง</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <p class="mb-0">&copy; 2025 BikeShop. All rights reserved.</p>
-                </div>
+    <footer class="app-footer">
+        <div class="container-xl d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+            <div>
+                <span class="fw-semibold text-dark">BikeShop</span>
+                <span class="text-muted ms-2">Premium Bicycle Store</span>
+            </div>
+            <div class="text-muted small">
+                &copy; {{ now()->year }} BikeShop. All rights reserved.
             </div>
         </div>
     </footer>
@@ -152,8 +150,16 @@
         @endif
     @endif
 
-    <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+    @stack('scripts')
 </body>
 
 </html>

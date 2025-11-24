@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
@@ -9,12 +8,18 @@ use App\Http\Controllers\Api\ProductControllerApi;
 use App\Http\Controllers\Api\CategoryControllerApi;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Auth\LogoutController;
 
 
 use App\Http\Controllers\OrderController;
 use App\Models\Order;
 
-use App\Http\Controllers\OrderdetailController;
+use App\Http\Controllers\OrderDetailController;
 use App\Models\OrderDetail;
 
 /*
@@ -66,7 +71,6 @@ Route::get('/category/insert' , [CategoryController::class,'insert']);
 Route::post('/category/insert' , [CategoryController::class,'insert']);
 
 
-Route::get('/home', [HomeController::class, 'index']);
 
 // Route::get('/api/product', [ProductControllerApi::class, 'product_list']);
 // Route::get('/api/category', [CategoryControllerApi::class, 'category_list']);
@@ -80,11 +84,30 @@ Route::get('/cart/delete/{id}', [CartController::class, 'deleteCart']);
 
 
 Route::get('/cart/update/{id}/{qty}', [CartController::class, 'updateCart']);
-Auth::routes();
+// Authentication Routes...
+Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('login', [LoginController::class, 'login']);
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('logout', [LogoutController::class, 'logout']);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Registration Routes...
+Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('register', [RegisterController::class, 'register']);
 
-Route::get('/logout', [App\Http\Controllers\Auth\logout::class , 'logout']);
+// Password Reset Routes...
+Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+// Email Verification Routes...
+Route::get('email/verify', [VerificationController::class, 'show'])->name('verification.notice');
+Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+    ->middleware(['signed'])
+    ->name('verification.verify');
+Route::post('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/cart/checkout', [CartController::class, 'checkout']);
 

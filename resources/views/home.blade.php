@@ -5,7 +5,7 @@
 
 @section('content')
 <!-- Hero Section -->
-<div class="hero-section bg-gradient-primary text-white py-5 mb-5">
+<div class="hero-section text-white mb-5">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">
@@ -44,8 +44,8 @@
 <div class="container-fluid px-4" ng-app="app" ng-controller="ctrl">
     <div class="row">
         <!-- Sidebar Categories -->
-        <div class="col-lg-3 col-md-4 mb-4" style="margin-top: 30px;">
-            <div class="card shadow-custom border-0 sticky-top" style="top: 120px;">
+        <div class="col-lg-3 col-md-4 mb-4 section-spacer">
+            <div class="card shadow-custom border-0 sticky-panel">
                 <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-list me-2"></i>หมวดหมู่สินค้า
@@ -70,9 +70,9 @@
         </div>
 
         <!-- Main Content -->
-        <div class="col-lg-9 col-md-8">
+        <div class="col-lg-9 col-md-8 section-spacer">
             <!-- Search Bar -->
-            <div class="card shadow-custom border-0 mb-4" style="margin-top: 30px;">
+            <div class="card shadow-custom border-0 mb-4">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-md-6">
@@ -206,76 +206,4 @@ app.service('productService', function($http) {
 });
 </script>
 
-<style>
-.hero-section {
-    margin-top: -2rem;
-    margin-bottom: 0 !important;
-}
-
-.product-image-container {
-    height: 180px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-    background: #f8f9fa;
-    border-radius: 0.5rem;
-    overflow: hidden;
-}
-
-.product-image-container img {
-    max-height: 100%;
-    width: auto;
-    transition: transform 0.3s ease;
-}
-
-.product-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--dark-color);
-    margin-bottom: 1rem;
-    height: 3em;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-}
-
-.product-details {
-    text-align: left;
-    margin-bottom: 1.5rem;
-}
-
-.stock-info {
-    margin-bottom: 0.75rem;
-}
-
-.bs-product-card {
-    background: white;
-    border-radius: var(--border-radius);
-    padding: 2.5rem;
-    min-height: 420px;
-    text-align: center;
-    position: relative;
-    transition: var(--transition);
-    box-shadow: var(--shadow-sm);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.list-group-item {
-    transition: all 0.3s ease;
-}
-
-.list-group-item:hover {
-    background-color: rgba(0, 123, 255, 0.1);
-    border-color: var(--primary-color);
-}
-
-.list-group-item.active {
-    border-color: var(--primary-color) !important;
-}
-</style>
 @endsection

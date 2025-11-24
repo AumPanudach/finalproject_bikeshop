@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 
-class logout extends Controller
+class LogoutController extends Controller
 {
     //
 

@@ -10,8 +10,9 @@
 
 
 
-{!! Form::model($category, array('action' => 'App\Http\Controllers\CategoryController@update' , 'method' => 'post' , 'enctype' => 'multipart/form-data')) !!}
+<form action="{{ url('/category/update') }}" method="POST" enctype="multipart/form-data">
 <input type="hidden" name="id" value="{{$category->id}}">
+@csrf
 @if($errors->any())
 <div class="alert alert-danger">
     @foreach ($errors->all() as $error)
@@ -29,8 +30,8 @@
 <table>
 
 <tr>
-    <td>{{ Form::label('name' , 'ชื่อสินค้า')}} </td>
-    <td>{{ Form::text('name', $category->name, ['class' => 'form-control'])}}</td>
+    <td><label for="name">ชื่อสินค้า</label> </td>
+    <td><input type="text" name="name" id="name" value="{{ old('name', $category->name) }}" class="form-control"></td>
 </tr>
 
 
@@ -41,5 +42,5 @@
 <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>บันทึก</button>
 </div>
 </div>
-{!!Form::close() !!}
+</form>
 @endsection

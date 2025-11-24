@@ -24,21 +24,18 @@
 
 <center>
 <br>
-{!! Form::open(array('action' => 'App\Http\Controllers\CategoryController@insert',
-'method'=>'post', 'enctype' => 'multipart/form-data')) !!} 
-<table>
-<tr>
-<td>{{ Form::label('name', 'ชื่อประเภทสินค้า') }}</td>
-<td>{{ Form::text('name', Request::old('name'), ['class' => 'form-control']) }}</td>
-</tr>
-
-</table>
-<br>
-<button onclick="location.href='/product'" type="reset" class="btn btn-danger">ยกเลิก</button>
-<button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>บันทึก</button>
-
-
-{!! Form::close() !!}
+<form action="{{ url('/category/insert') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <table>
+        <tr>
+            <td><label for="name">ชื่อประเภทสินค้า</label></td>
+            <td><input type="text" name="name" id="name" value="{{ old('name') }}" class="form-control"></td>
+        </tr>
+    </table>
+    <br>
+    <button onclick="location.href='/product'" type="reset" class="btn btn-danger">ยกเลิก</button>
+    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>บันทึก</button>
+</form>
 <br>
 </div>
 

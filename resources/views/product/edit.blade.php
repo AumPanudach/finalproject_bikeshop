@@ -24,13 +24,8 @@
         </div>
     </div>
 
-    {!! Form::model($product ?? null, array(
-        'action' => 'App\Http\Controllers\ProductController@update',
-        'method' => 'post',
-        'enctype' => 'multipart/form-data',
-        'class' => 'needs-validation',
-        'novalidate' => true
-    )) !!}
+    <form action="{{ url('/product/update') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+    @csrf
     
     @if(isset($product))
         <input type="hidden" name="id" value="{{ $product->id }}">
@@ -67,12 +62,14 @@
                                 <i class="fas fa-barcode me-1 text-primary"></i>รหัสสินค้า
                                 <span class="text-danger">*</span>
                             </label>
-                            {{ Form::text('code', null, [
-                                'class' => 'form-control form-control-lg',
-                                'id' => 'code',
-                                'placeholder' => 'ป้อนรหัสสินค้า เช่น P001',
-                                'required' => true
-                            ]) }}
+                            <input 
+                                type="text" 
+                                name="code" 
+                                id="code" 
+                                class="form-control form-control-lg" 
+                                placeholder="ป้อนรหัสสินค้า เช่น P001" 
+                                value="{{ old('code', $product->code ?? '') }}"
+                                required>
                             <div class="invalid-feedback">กรุณาป้อนรหัสสินค้า</div>
                         </div>
 
@@ -81,12 +78,18 @@
                                 <i class="fas fa-tags me-1 text-primary"></i>ประเภทสินค้า
                                 <span class="text-danger">*</span>
                             </label>
-                            {{ Form::select('category_id', $categories, null, [
-                                'class' => 'form-select form-select-lg',
-                                'id' => 'category_id',
-                                'required' => true,
-                                'placeholder' => 'เลือกประเภทสินค้า'
-                            ]) }}
+                            <select 
+                                name="category_id" 
+                                id="category_id" 
+                                class="form-select form-select-lg" 
+                                required>
+                                <option value="" disabled {{ old('category_id', $product->category_id ?? '') === '' ? 'selected' : '' }}>เลือกประเภทสินค้า</option>
+                                @foreach($categories as $id => $categoryName)
+                                    <option value="{{ $id }}" {{ (string)old('category_id', $product->category_id ?? '') === (string)$id ? 'selected' : '' }}>
+                                        {{ $categoryName }}
+                                    </option>
+                                @endforeach
+                            </select>
                             <div class="invalid-feedback">กรุณาเลือกประเภทสินค้า</div>
                         </div>
 
@@ -95,12 +98,14 @@
                                 <i class="fas fa-tag me-1 text-primary"></i>ชื่อสินค้า
                                 <span class="text-danger">*</span>
                             </label>
-                            {{ Form::text('name', null, [
-                                'class' => 'form-control form-control-lg',
-                                'id' => 'name',
-                                'placeholder' => 'ป้อนชื่อสินค้า',
-                                'required' => true
-                            ]) }}
+                            <input 
+                                type="text" 
+                                name="name" 
+                                id="name" 
+                                class="form-control form-control-lg" 
+                                placeholder="ป้อนชื่อสินค้า" 
+                                value="{{ old('name', $product->name ?? '') }}"
+                                required>
                             <div class="invalid-feedback">กรุณาป้อนชื่อสินค้า</div>
                         </div>
 
@@ -109,13 +114,15 @@
                                 <i class="fas fa-cubes me-1 text-primary"></i>จำนวนคงเหลือ
                                 <span class="text-danger">*</span>
                             </label>
-                            {{ Form::number('stock_qty', null, [
-                                'class' => 'form-control form-control-lg',
-                                'id' => 'stock_qty',
-                                'placeholder' => '0',
-                                'min' => '0',
-                                'required' => true
-                            ]) }}
+                            <input 
+                                type="number" 
+                                name="stock_qty" 
+                                id="stock_qty" 
+                                class="form-control form-control-lg" 
+                                placeholder="0" 
+                                min="0" 
+                                value="{{ old('stock_qty', $product->stock_qty ?? '') }}"
+                                required>
                             <div class="invalid-feedback">กรุณาป้อนจำนวนคงเหลือ</div>
                         </div>
 
@@ -124,14 +131,16 @@
                                 <i class="fas fa-dollar-sign me-1 text-primary"></i>ราคาขายต่อหน่วย (บาท)
                                 <span class="text-danger">*</span>
                             </label>
-                            {{ Form::number('price', null, [
-                                'class' => 'form-control form-control-lg',
-                                'id' => 'price',
-                                'placeholder' => '0.00',
-                                'step' => '0.01',
-                                'min' => '0',
-                                'required' => true
-                            ]) }}
+                            <input 
+                                type="number" 
+                                name="price" 
+                                id="price" 
+                                class="form-control form-control-lg" 
+                                placeholder="0.00" 
+                                step="0.01" 
+                                min="0" 
+                                value="{{ old('price', $product->price ?? '') }}"
+                                required>
                             <div class="invalid-feedback">กรุณาป้อนราคาขาย</div>
                         </div>
                     </div>
@@ -167,12 +176,13 @@
                         <label for="image" class="form-label fw-semibold">
                             เลือกรูปภาพใหม่
                         </label>
-                        {{ Form::file('image', [
-                            'class' => 'form-control',
-                            'id' => 'image',
-                            'accept' => 'image/*',
-                            'onchange' => 'previewImage(this)'
-                        ]) }}
+                        <input 
+                            type="file" 
+                            name="image" 
+                            id="image" 
+                            class="form-control" 
+                            accept="image/*" 
+                            onchange="previewImage(this)">
                         <small class="text-muted">รองรับไฟล์ JPG, PNG, GIF ขนาดไม่เกิน 2MB</small>
                     </div>
 
@@ -199,7 +209,7 @@
         </div>
     </div>
 
-    {!! Form::close() !!}
+    </form>
 </div>
 
 <script>

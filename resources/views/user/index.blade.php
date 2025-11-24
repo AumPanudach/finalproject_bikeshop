@@ -54,7 +54,7 @@
         
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
+                <table class="table table-modern mb-0 align-middle">
                     <thead>
                         <tr>
                             <th class="text-center" style="width: 80px;">ID</th>
@@ -159,40 +159,12 @@
     </div>
 </div>
 
-<style>
-.avatar-circle {
-    width: 40px;
-    height: 40px;
-    background: rgba(0, 123, 255, 0.1);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-group .btn {
-    margin: 0 1px;
-}
-
-.table-hover tbody tr:hover {
-    background-color: rgba(0, 123, 255, 0.05);
-}
-</style>
-
 <script>
 function confirmDelete(userId, userName) {
     document.getElementById('userName').textContent = userName;
     document.getElementById('confirmDeleteBtn').href = '{{ URL::to("user/remove") }}/' + userId;
     new bootstrap.Modal(document.getElementById('deleteModal')).show();
 }
-
-// Initialize tooltips
-document.addEventListener('DOMContentLoaded', function() {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-});
 </script>
 
 @endsection

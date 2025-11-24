@@ -8,8 +8,9 @@
     <li class="active">แก้ไขผู้ใช้ </li>
 </ul>
 
-{!! Form::model($user, array('action' => 'App\Http\Controllers\UserController@update', 'method' => 'post', 'enctype' => 'multipart/form-data')) !!}
+<form action="{{ url('/user/update') }}" method="POST" enctype="multipart/form-data">
 <input type="hidden" name="id" value="{{ $user->id }}">
+@csrf
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="panel-title">
@@ -28,12 +29,12 @@
 <div class="panel-body">
     <table>
         <tr>
-            <td>{{ Form::label('name', 'ชื่อผู้ใช้ ') }}</td>
-            <td>{{ Form::text('name', $user->name, ['class' => 'form-control']) }}</td>
+            <td><label for="name">ชื่อผู้ใช้ </label></td>
+            <td><input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" class="form-control"></td>
         </tr>
         <tr>
-            <td>{{ Form::label('email', 'email ') }}</td>
-            <td>{{ Form::text('email', $user->email, ['class' => 'form-control']) }}</td>
+            <td><label for="email">email </label></td>
+            <td><input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" class="form-control"></td>
         </tr>   
        
     </table>
@@ -43,6 +44,6 @@
     <button type="reset" class="btn btn-danger">ยกเลิก</button>
     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> บันทึก</button>
 </div>
-{!! Form::close() !!}
+</form>
 
 @endsection

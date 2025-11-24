@@ -8,7 +8,8 @@
     <li class="active">เพิ่มผู้ใช้ </li>
 </ul>
 
-{!! Form::open(array('action' => 'App\Http\Controllers\UserController@insert', 'method' => 'post', 'enctype' => 'multipart/form-data')) !!}
+<form action="{{ url('/user/add') }}" method="POST" enctype="multipart/form-data">
+@csrf
 
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -28,16 +29,16 @@
 <div class="panel-body">
     <table>
         <tr>
-            <td>{{ Form::label('name', 'ชื่อผู้ใช้ ') }}</td>
-            <td>{{ Form::text('name', Request::old('name'), ['class' => 'form-control']) }}</td>
+            <td><label for="name">ชื่อผู้ใช้ </label></td>
+            <td><input type="text" name="name" id="name" value="{{ old('name') }}" class="form-control"></td>
         </tr>
         <tr>
-            <td>{{ Form::label('email', 'email ') }}</td>
-            <td>{{ Form::text('email', Request::old('email'), ['class' => 'form-control']) }}</td>
+            <td><label for="email">email </label></td>
+            <td><input type="email" name="email" id="email" value="{{ old('email') }}" class="form-control"></td>
         </tr>   
         <tr>
-            <td>{{ Form::label('password', 'password ') }}</td>
-            <td>{{ Form::password('password', Request::old('name'), ['class' => 'form-control']) }}</td>
+            <td><label for="password">password </label></td>
+            <td><input type="password" name="password" id="password" class="form-control"></td>
         </tr>
     </table>
 </div>
@@ -46,6 +47,6 @@
     <button type="reset" class="btn btn-danger">ยกเลิก</button>
     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> บันทึก</button>
 </div>
-{!! Form::close() !!}
+</form>
 
 @endsection
