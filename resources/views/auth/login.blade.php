@@ -10,7 +10,7 @@
                         <i class="fas fa-bicycle text-primary fs-1"></i>
                     </div>
                     <h3 class="fw-bold text-dark mb-0">เข้าสู่ระบบ</h3>
-                    <p class="text-muted mb-0">ยินดีต้อนรับสู่ BikeShop</p>
+                    <p class="text-muted mb-0">ยินดีต้อนรับสู่ BikeShop ระบบสำหรับจัดการร้านค้าของคุณ</p>
                 </div>
 
                 <div class="card-body p-5">
