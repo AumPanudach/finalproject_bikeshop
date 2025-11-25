@@ -40,26 +40,24 @@ RUN mkdir -p storage/framework/{sessions,views,cache} \
 # Install dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Laravel optimization
-RUN php artisan config:clear || true \
-    && php artisan cache:clear || true \
-    && php artisan view:clear || true \
-    && php artisan route:clear || true
-
-# Generate application key if not set
-RUN php artisan key:generate --force || true
-
-# Cache for production
-RUN php artisan config:cache || true \
-    && php artisan route:cache || true \
-    && php artisan view:cache || true
-
 # Set proper permissions
-RUN chmod -R 775 storage bootstrap/cache
+RUN chmod -R 777 storage bootstrap/cache
 
 # Expose port
 EXPOSE 8080
 
-# Start PHP built-in server
-CMD php artisan serve --host=0.0.0.0 --port=8080
+# Create startup script
+RUN echo '#!/bin/sh' > /start.sh && \
+    echo 'set -e' >> /start.sh && \
+    echo 'php artisan config:clear' >> /start.sh && \
+    echo 'php artisan cache:clear' >> /start.sh && \
+    echo 'php artisan view:clear' >> /start.sh && \
+    echo 'php artisan config:cache' >> /start.sh && \
+    echo 'php artisan route:cache' >> /start.sh && \
+    echo 'php artisan view:cache' >> /start.sh && \
+    echo 'php artisan serve --host=0.0.0.0 --port=8080' >> /start.sh && \
+    chmod +x /start.sh
+
+# Start application
+CMD ["/start.sh"]
 
