@@ -51,8 +51,11 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 # Build frontend assets (skip on error if not needed)
 RUN npm run production || echo "Skipping npm build - using existing assets"
 
+# Create storage link
+RUN php artisan storage:link || true
+
 # Set proper permissions
-RUN chmod -R 777 storage bootstrap/cache
+RUN chmod -R 777 storage bootstrap/cache public/storage
 
 # Expose port
 EXPOSE 8080
