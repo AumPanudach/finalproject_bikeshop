@@ -14,36 +14,33 @@ class ProductTableSeeder extends Seeder
      */
     public function run()
     {
-        // Only seed if table is empty
-        if (DB::table('product')->count() == 0) {
-            DB::table('product')->insert( array(
-                [
-                    'code' => 'P001',
-                    'name' => 'เสือหมอบ JAVA',
-                    'category_id' => 1,
-                    'price' => 11900,
-                    'stock_qty' => 2,
-                ],
+        DB::table('product')->insert( array(
+            [
+                'code' => 'P001',
+                'name' => 'เสือหมอบ JAVA',
+                'category_id' => 1,
+                'price' => 11900,
+                'stock_qty' => 2,
+            ],
 
-                [
-                    'code' => 'P002',
-                    'name' => 'เสือหมอบ วินเทจ Cannello Silvia',
-                    'category_id' => 1,
-                    'price' => 5000,
-                    'stock_qty' => 4,
-                ],
 
-                [
-                    'code' => 'P003',
-                    'name' => 'เสือหมอบ Panther March',
-                    'category_id' => 1,
-                    'price' => 6500,
-                    'stock_qty' => 2,
-                ],
-            ));
-            echo "Products seeded successfully.\n";
-        } else {
-            echo "Products table already has data, skipping seed.\n";
-        }
+            [
+                'code' => 'P002',
+                'name' => 'เสือหมอบ วินเทจ Cannello Silvia',
+                'category_id' => 1,
+                'price' => 5000,
+                'stock_qty' => 4,
+            ],
+
+
+            [
+                'code' => 'P003',
+                'name' => 'เสือหมอบ Panther March',
+                'category_id' => 1,
+                'price' => 6500,
+                'stock_qty' => 2,
+            ],
+        ));
+        //
     }
 }
