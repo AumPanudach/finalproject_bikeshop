@@ -3,7 +3,6 @@
 .env
 .env.example
 node_modules
-vendor
 storage/logs/*
 storage/framework/cache/*
 storage/framework/sessions/*
@@ -20,7 +19,4 @@ Thumbs.db
 tests
 *.md
 phpunit.xml
-webpack.mix.js
-package.json
-package-lock.json
 

@@ -16,6 +16,8 @@ RUN apk add --no-cache \
     zip \
     unzip \
     mysql-client \
+    nodejs \
+    npm \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
     pdo_mysql \
@@ -29,6 +31,12 @@ RUN apk add --no-cache \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Copy package files first for better caching
+COPY package*.json ./
+
+# Install npm dependencies
+RUN npm install
+
 # Copy application files
 COPY . .
 
@@ -37,8 +45,11 @@ RUN mkdir -p storage/framework/{sessions,views,cache} \
     && mkdir -p storage/logs \
     && mkdir -p bootstrap/cache
 
-# Install dependencies
+# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+# Build frontend assets
+RUN npm run production
 
 # Set proper permissions
 RUN chmod -R 777 storage bootstrap/cache
