@@ -23,8 +23,15 @@
     </div>
 
     @if(count($cart_items))
-        <?php $sum_price = 0; ?>
-        <?php $sum_qty = 0; ?>
+        <?php 
+            // Calculate totals once
+            $sum_price = 0;
+            $sum_qty = 0;
+            foreach($cart_items as $item) {
+                $sum_price += $item['price'] * $item['qty'];
+                $sum_qty += $item['qty'];
+            }
+        ?>
         
         <!-- Cart Items Card -->
         <div class="card app-card shadow-sm border-0 mb-4">
@@ -75,10 +82,6 @@
                                         </a>
                                     </td>
                                 </tr>
-                                <?php 
-                                    $sum_price += $item_total;
-                                    $sum_qty += $c['qty'];
-                                ?>
                             @endforeach
                         </tbody>
                         <tfoot class="table-light">
@@ -129,10 +132,6 @@
                                 </div>
                             </div>
                         </div>
-                        <?php 
-                            $sum_price += $item_total;
-                            $sum_qty += $c['qty'];
-                        ?>
                     @endforeach
 
                     <!-- Mobile Total -->
