@@ -101,6 +101,10 @@ RUN echo '#!/bin/sh' > /start.sh && \
     echo 'php artisan view:clear || true' >> /start.sh && \
     echo 'echo "Testing database connection..."' >> /start.sh && \
     echo 'php artisan tinker --execute="try { DB::connection()->getPdo(); echo \"Database connected successfully\"; } catch (Exception \$e) { echo \"Database connection failed: \" . \$e->getMessage(); }"' >> /start.sh && \
+    echo 'echo "Running database migrations..."' >> /start.sh && \
+    echo 'php artisan migrate --force || true' >> /start.sh && \
+    echo 'echo "Seeding database (if empty)..."' >> /start.sh && \
+    echo 'php artisan db:seed --force || true' >> /start.sh && \
     echo 'echo "Caching configuration..."' >> /start.sh && \
     echo 'echo "APP_URL: $APP_URL"' >> /start.sh && \
     echo 'echo "Asset URL: $(php artisan tinker --execute="echo config(\"app.url\");")"' >> /start.sh && \
