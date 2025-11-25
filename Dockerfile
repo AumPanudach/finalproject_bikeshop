@@ -95,12 +95,15 @@ RUN echo '#!/bin/sh' > /start.sh && \
     echo 'echo "Starting PHP-FPM..."' >> /start.sh && \
     echo 'php-fpm -D' >> /start.sh && \
     echo 'echo "Clearing cache..."' >> /start.sh && \
+    echo 'rm -rf bootstrap/cache/*.php || true' >> /start.sh && \
     echo 'php artisan config:clear || true' >> /start.sh && \
     echo 'php artisan cache:clear || true' >> /start.sh && \
     echo 'php artisan view:clear || true' >> /start.sh && \
     echo 'echo "Testing database connection..."' >> /start.sh && \
     echo 'php artisan tinker --execute="try { DB::connection()->getPdo(); echo \"Database connected successfully\"; } catch (Exception \$e) { echo \"Database connection failed: \" . \$e->getMessage(); }"' >> /start.sh && \
     echo 'echo "Caching configuration..."' >> /start.sh && \
+    echo 'echo "APP_URL: $APP_URL"' >> /start.sh && \
+    echo 'echo "Asset URL: $(php artisan tinker --execute="echo config(\"app.url\");")"' >> /start.sh && \
     echo 'php artisan config:cache || true' >> /start.sh && \
     echo 'php artisan route:cache || true' >> /start.sh && \
     echo 'php artisan view:cache || true' >> /start.sh && \
