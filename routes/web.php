@@ -40,7 +40,7 @@ Route::get('/health', function () {
 });
 
 Route::get('/', function () {
-    return view('layouts.master');
+    return redirect('/home');
 });
 
 Route::get('/test', function () {
