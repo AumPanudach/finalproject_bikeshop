@@ -60,12 +60,17 @@ EXPOSE 8080
 # Create startup script
 RUN echo '#!/bin/sh' > /start.sh && \
     echo 'set -e' >> /start.sh && \
+    echo 'echo "Starting application..."' >> /start.sh && \
     echo 'php artisan config:clear' >> /start.sh && \
     echo 'php artisan cache:clear' >> /start.sh && \
     echo 'php artisan view:clear' >> /start.sh && \
+    echo 'echo "Running database migrations..."' >> /start.sh && \
+    echo 'php artisan migrate --force' >> /start.sh && \
+    echo 'echo "Caching configuration..."' >> /start.sh && \
     echo 'php artisan config:cache' >> /start.sh && \
     echo 'php artisan route:cache' >> /start.sh && \
     echo 'php artisan view:cache' >> /start.sh && \
+    echo 'echo "Starting server on port 8080..."' >> /start.sh && \
     echo 'php artisan serve --host=0.0.0.0 --port=8080' >> /start.sh && \
     chmod +x /start.sh
 

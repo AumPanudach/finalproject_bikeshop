@@ -34,6 +34,11 @@ use App\Models\OrderDetail;
 */
 
 
+// Health check route for Railway
+Route::get('/health', function () {
+    return response()->json(['status' => 'ok'], 200);
+});
+
 Route::get('/', function () {
     return view('layouts.master');
 });
