@@ -1,5 +1,5 @@
-# Use PHP 8.2 CLI Alpine for smaller image size
-FROM php:8.2-cli-alpine
+# Use PHP 8.2 FPM Alpine for smaller image size
+FROM php:8.2-fpm-alpine
 
 # Set working directory
 WORKDIR /var/www/html
@@ -18,6 +18,7 @@ RUN apk add --no-cache \
     mysql-client \
     nodejs \
     npm \
+    nginx \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
     pdo_mysql \
@@ -51,11 +52,28 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 # Build frontend assets (skip on error if not needed)
 RUN npm run production || echo "Skipping npm build - using existing assets"
 
+# Create nginx config
+RUN echo 'server {' > /etc/nginx/http.d/default.conf && \
+    echo '    listen 8080;' >> /etc/nginx/http.d/default.conf && \
+    echo '    root /var/www/html/public;' >> /etc/nginx/http.d/default.conf && \
+    echo '    index index.php;' >> /etc/nginx/http.d/default.conf && \
+    echo '    location / {' >> /etc/nginx/http.d/default.conf && \
+    echo '        try_files $uri $uri/ /index.php?$query_string;' >> /etc/nginx/http.d/default.conf && \
+    echo '    }' >> /etc/nginx/http.d/default.conf && \
+    echo '    location ~ \.php$ {' >> /etc/nginx/http.d/default.conf && \
+    echo '        fastcgi_pass 127.0.0.1:9000;' >> /etc/nginx/http.d/default.conf && \
+    echo '        fastcgi_index index.php;' >> /etc/nginx/http.d/default.conf && \
+    echo '        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;' >> /etc/nginx/http.d/default.conf && \
+    echo '        include fastcgi_params;' >> /etc/nginx/http.d/default.conf && \
+    echo '    }' >> /etc/nginx/http.d/default.conf && \
+    echo '}' >> /etc/nginx/http.d/default.conf
+
 # Create storage link
 RUN php artisan storage:link || true
 
 # Set proper permissions
-RUN chmod -R 777 storage bootstrap/cache public/storage
+RUN chmod -R 777 storage bootstrap/cache && \
+    chown -R www-data:www-data /var/www/html
 
 # Expose port
 EXPOSE 8080
@@ -63,16 +81,18 @@ EXPOSE 8080
 # Create startup script
 RUN echo '#!/bin/sh' > /start.sh && \
     echo 'set -e' >> /start.sh && \
-    echo 'echo "Starting application..."' >> /start.sh && \
-    echo 'php artisan config:clear' >> /start.sh && \
-    echo 'php artisan cache:clear' >> /start.sh && \
-    echo 'php artisan view:clear' >> /start.sh && \
+    echo 'echo "Starting PHP-FPM..."' >> /start.sh && \
+    echo 'php-fpm -D' >> /start.sh && \
+    echo 'echo "Clearing cache..."' >> /start.sh && \
+    echo 'php artisan config:clear || true' >> /start.sh && \
+    echo 'php artisan cache:clear || true' >> /start.sh && \
+    echo 'php artisan view:clear || true' >> /start.sh && \
     echo 'echo "Caching configuration..."' >> /start.sh && \
-    echo 'php artisan config:cache' >> /start.sh && \
-    echo 'php artisan route:cache' >> /start.sh && \
-    echo 'php artisan view:cache' >> /start.sh && \
-    echo 'echo "Starting server on port 8080..."' >> /start.sh && \
-    echo 'php artisan serve --host=0.0.0.0 --port=8080' >> /start.sh && \
+    echo 'php artisan config:cache || true' >> /start.sh && \
+    echo 'php artisan route:cache || true' >> /start.sh && \
+    echo 'php artisan view:cache || true' >> /start.sh && \
+    echo 'echo "Starting Nginx on port 8080..."' >> /start.sh && \
+    echo 'nginx -g "daemon off;"' >> /start.sh && \
     chmod +x /start.sh
 
 # Start application
