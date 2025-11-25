@@ -41,7 +41,29 @@ padding: 5px;
                 </tr>
                 <tr>
                     <td valign="top"><strong>ที่อยู่จัดส่ง:</strong></td>
-                    <td>{{ $cust_address ?? '-' }}</td>
+                    <td>
+                        @if(isset($cust_address_no) && $cust_address_no)
+                            {{ $cust_address_no }} 
+                            @if(isset($cust_address_road) && $cust_address_road)
+                                ถนน{{ $cust_address_road }}
+                            @endif
+                            <br>
+                            @if(isset($cust_address_subdistrict) && $cust_address_subdistrict)
+                                ตำบล/แขวง{{ $cust_address_subdistrict }}
+                            @endif
+                            @if(isset($cust_address_district) && $cust_address_district)
+                                อำเภอ/เขต{{ $cust_address_district }}
+                            @endif
+                            @if(isset($cust_address_province) && $cust_address_province)
+                                จังหวัด{{ $cust_address_province }}
+                            @endif
+                            @if(isset($cust_address_postcode) && $cust_address_postcode)
+                                {{ $cust_address_postcode }}
+                            @endif
+                        @else
+                            -
+                        @endif
+                    </td>
                 </tr>
             </table>
         </td>

@@ -91,8 +91,15 @@ return redirect('cart/view');
             
             $cust_name = $request->input('cust_name');
             $cust_email = $request->input('cust_email');
-            $cust_address = $request->input('cust_address');
             $cust_phone = $request->input('cust_phone');
+            
+            // Address fields
+            $cust_address_no = $request->input('cust_address_no');
+            $cust_address_road = $request->input('cust_address_road');
+            $cust_address_subdistrict = $request->input('cust_address_subdistrict');
+            $cust_address_district = $request->input('cust_address_district');
+            $cust_address_province = $request->input('cust_address_province');
+            $cust_address_postcode = $request->input('cust_address_postcode');
             
             if(Order::all()->last() == NULL){
                 $numpo = 1;
@@ -112,7 +119,9 @@ return redirect('cart/view');
 
             // Generate HTML for PDF
             $html_output = view('cart/complete', compact('cart_items', 'cust_name', 'cust_email', 
-                'cust_address', 'cust_phone', 'po_no', 'po_date', 'total_amount'))->render();
+                'cust_phone', 'cust_address_no', 'cust_address_road', 'cust_address_subdistrict',
+                'cust_address_district', 'cust_address_province', 'cust_address_postcode',
+                'po_no', 'po_date', 'total_amount'))->render();
             
             try {
                 // Create PDF with temp directory configuration
@@ -153,8 +162,7 @@ return redirect('cart/view');
         
         $cust_name = $request->input('cust_name');
         $cust_email = $request->input('cust_email');
-        $cust_address = $request->input('cust_address');
-        $cust_phone = $request->input('cust_phone');
+        // Note: Address and phone are not stored in database, only used for PDF
         
         if(Order::all()->last() == NULL){
             $numpo = 1;
@@ -168,13 +176,11 @@ return redirect('cart/view');
         $po_date = date("Y-m-d H:i:s");
 
         try {
-            // Create Order
+            // Create Order (without address/phone - not stored in DB)
             $Order = new Order();
             $Order->serial_po = $po_no;
             $Order->order_name = Auth::user()->name;
             $Order->order_email = $cust_email;
-            $Order->order_address = $cust_address;
-            $Order->order_phone = $cust_phone;
             $Order->user_id = Auth::user()->id;
             $Order->status = 0;
             $Order->save();

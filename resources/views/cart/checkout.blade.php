@@ -100,9 +100,32 @@
                         <label class="form-label fw-semibold">
                             ที่อยู่จัดส่ง <span class="text-danger">*</span>
                         </label>
-                        <textarea class="form-control" id="cust_address" rows="3" 
-                                  placeholder="กรอกที่อยู่สำหรับจัดส่งสินค้า..." required></textarea>
-                        <small class="text-muted">ระบุบ้านเลขที่, ถนน, ตำบล/แขวง, อำเภอ/เขต, จังหวัด, รหัสไปรษณีย์</small>
+                        <div class="row g-2">
+                            <div class="col-12">
+                                <input type="text" class="form-control" id="cust_address_no" 
+                                       placeholder="บ้านเลขที่ / อาคาร" required>
+                            </div>
+                            <div class="col-12">
+                                <input type="text" class="form-control" id="cust_address_road" 
+                                       placeholder="ถนน" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="cust_address_subdistrict" 
+                                       placeholder="ตำบล / แขวง" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="cust_address_district" 
+                                       placeholder="อำเภอ / เขต" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="cust_address_province" 
+                                       placeholder="จังหวัด" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="cust_address_postcode" 
+                                       placeholder="รหัสไปรษณีย์" maxlength="5" required>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -110,7 +133,7 @@
                             เบอร์โทรศัพท์ <span class="text-danger">*</span>
                         </label>
                         <input type="tel" class="form-control" id="cust_phone" 
-                               placeholder="0XX-XXX-XXXX" required>
+                               placeholder="0XX-XXX-XXXX" maxlength="10" required>
                     </div>
 
                     <div class="alert alert-info d-flex align-items-start gap-2 mb-0">
@@ -142,12 +165,53 @@
 @push('scripts')
 <script type="text/javascript">
 function validateForm() {
-    const address = $('#cust_address').val().trim();
+    const addressNo = $('#cust_address_no').val().trim();
+    const addressRoad = $('#cust_address_road').val().trim();
+    const addressSubdistrict = $('#cust_address_subdistrict').val().trim();
+    const addressDistrict = $('#cust_address_district').val().trim();
+    const addressProvince = $('#cust_address_province').val().trim();
+    const addressPostcode = $('#cust_address_postcode').val().trim();
     const phone = $('#cust_phone').val().trim();
     
-    if (!address) {
-        toastr.error('กรุณากรอกที่อยู่จัดส่ง');
-        $('#cust_address').focus();
+    if (!addressNo) {
+        toastr.error('กรุณากรอกบ้านเลขที่ / อาคาร');
+        $('#cust_address_no').focus();
+        return false;
+    }
+    
+    if (!addressRoad) {
+        toastr.error('กรุณากรอกถนน');
+        $('#cust_address_road').focus();
+        return false;
+    }
+    
+    if (!addressSubdistrict) {
+        toastr.error('กรุณากรอกตำบล / แขวง');
+        $('#cust_address_subdistrict').focus();
+        return false;
+    }
+    
+    if (!addressDistrict) {
+        toastr.error('กรุณากรอกอำเภอ / เขต');
+        $('#cust_address_district').focus();
+        return false;
+    }
+    
+    if (!addressProvince) {
+        toastr.error('กรุณากรอกจังหวัด');
+        $('#cust_address_province').focus();
+        return false;
+    }
+    
+    if (!addressPostcode) {
+        toastr.error('กรุณากรอกรหัสไปรษณีย์');
+        $('#cust_address_postcode').focus();
+        return false;
+    }
+    
+    if (addressPostcode.length !== 5 || !/^\d+$/.test(addressPostcode)) {
+        toastr.error('กรุณากรอกรหัสไปรษณีย์ 5 หลัก');
+        $('#cust_address_postcode').focus();
         return false;
     }
     
@@ -157,8 +221,8 @@ function validateForm() {
         return false;
     }
     
-    if (phone.length < 9) {
-        toastr.error('กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง');
+    if (phone.length < 9 || !/^\d+$/.test(phone)) {
+        toastr.error('กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง (ตัวเลข 9-10 หลัก)');
         $('#cust_phone').focus();
         return false;
     }
@@ -172,7 +236,12 @@ function complete() {
     const params = new URLSearchParams({
         cust_name: $('#cust_name').val(),
         cust_email: $('#cust_email').val(),
-        cust_address: $('#cust_address').val(),
+        cust_address_no: $('#cust_address_no').val(),
+        cust_address_road: $('#cust_address_road').val(),
+        cust_address_subdistrict: $('#cust_address_subdistrict').val(),
+        cust_address_district: $('#cust_address_district').val(),
+        cust_address_province: $('#cust_address_province').val(),
+        cust_address_postcode: $('#cust_address_postcode').val(),
         cust_phone: $('#cust_phone').val()
     });
     
@@ -185,7 +254,12 @@ function AddToOrder() {
     const params = new URLSearchParams({
         cust_name: $('#cust_name').val(),
         cust_email: $('#cust_email').val(),
-        cust_address: $('#cust_address').val(),
+        cust_address_no: $('#cust_address_no').val(),
+        cust_address_road: $('#cust_address_road').val(),
+        cust_address_subdistrict: $('#cust_address_subdistrict').val(),
+        cust_address_district: $('#cust_address_district').val(),
+        cust_address_province: $('#cust_address_province').val(),
+        cust_address_postcode: $('#cust_address_postcode').val(),
         cust_phone: $('#cust_phone').val()
     });
     
