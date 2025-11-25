@@ -98,6 +98,8 @@ RUN echo '#!/bin/sh' > /start.sh && \
     echo 'php artisan config:clear || true' >> /start.sh && \
     echo 'php artisan cache:clear || true' >> /start.sh && \
     echo 'php artisan view:clear || true' >> /start.sh && \
+    echo 'echo "Testing database connection..."' >> /start.sh && \
+    echo 'php artisan tinker --execute="try { DB::connection()->getPdo(); echo \"Database connected successfully\"; } catch (Exception \$e) { echo \"Database connection failed: \" . \$e->getMessage(); }"' >> /start.sh && \
     echo 'echo "Caching configuration..."' >> /start.sh && \
     echo 'php artisan config:cache || true' >> /start.sh && \
     echo 'php artisan route:cache || true' >> /start.sh && \
