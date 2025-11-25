@@ -5,7 +5,7 @@
     <div class="page-header">
         <h1 class="mb-2">
             <i class="fas fa-receipt text-primary me-2"></i>รายละเอียดคำสั่งซื้อ
-        </h1>
+    </h1>
         <p class="text-muted mb-0">
             หมายเลขคำสั่งซื้อ #{{ $orderdetail->serial_po }}
         </p>
@@ -40,7 +40,7 @@
                                 <span class="status-chip status-chip--pending">
                                     <i class="fas fa-clock me-1"></i>ยังไม่ชำระเงิน
                                 </span>
-                            @endif
+                    @endif
                         </dd>
                     </dl>
 
@@ -70,23 +70,23 @@
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-modern mb-0">
-                            <thead>
-                                <tr>
+        <thead>
+            <tr>
                                     <th style="width: 60px;">#</th>
                                     <th>สินค้า</th>
                                     <th class="text-end" style="width: 140px;">ราคาต่อหน่วย</th>
                                     <th class="text-center" style="width: 100px;">จำนวน</th>
                                     <th class="text-end" style="width: 140px;">รวมเงิน</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+            </tr>
+        </thead>
+        <tbody>
                                 @php $sum_price = 0; @endphp
                                 @foreach ($orderdetail->detail as $item)
                                     @php
                                         $line = $item->price * $item->qty;
                                         $sum_price += $line;
                                     @endphp
-                                    <tr>
+            <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td class="fw-semibold">{{ $item->product_name }}</td>
                                         <td class="text-end">{{ number_format($item->price, 2) }}</td>
@@ -95,19 +95,19 @@
                                     </tr>
                                 @endforeach
                             </tbody>
-                            <tfoot>
+            <tfoot>
                                 <tr class="bg-light">
                                     <th colspan="4" class="text-end">รวมเงินทั้งหมด</th>
                                     <th class="text-end text-primary fw-bold">
                                         {{ number_format($sum_price, 2) }} บาท
                                     </th>
-                                </tr>
-                            </tfoot>
-                        </table>
+                </tr>
+            </tfoot>
+    </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@endsection
+        @endsection
