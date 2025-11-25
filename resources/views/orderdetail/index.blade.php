@@ -25,6 +25,12 @@
                         <dt class="col-sm-5 text-muted">อีเมล</dt>
                         <dd class="col-sm-7">{{ $orderdetail->order_email }}</dd>
 
+                        <dt class="col-sm-5 text-muted">เบอร์โทร</dt>
+                        <dd class="col-sm-7">{{ $orderdetail->order_phone ?? '-' }}</dd>
+
+                        <dt class="col-sm-5 text-muted">ที่อยู่จัดส่ง</dt>
+                        <dd class="col-sm-7">{{ $orderdetail->order_address ?? '-' }}</dd>
+
                         <dt class="col-sm-5 text-muted">วันที่สั่งซื้อ</dt>
                         <dd class="col-sm-7">
                             {{ \Carbon\Carbon::parse($orderdetail->created_at)->format('d/m/Y H:i') }}

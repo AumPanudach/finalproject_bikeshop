@@ -28,19 +28,27 @@ padding: 5px;
         <td>
             <table border="0" width="100%">
                 <tr>
-                    <td><strong>ชื่อลูกค้า :</strong></td>
+                    <td width="30%"><strong>ชื่อลูกค้า:</strong></td>
                     <td>{{ $cust_name }}</td>
                 </tr>
                 <tr>
-                    <td><strong>อีเมล:์</strong></td>
+                    <td><strong>อีเมล์:</strong></td>
                     <td>{{ $cust_email }}</td>
+                </tr>
+                <tr>
+                    <td><strong>เบอร์โทร:</strong></td>
+                    <td>{{ $cust_phone ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td valign="top"><strong>ที่อยู่จัดส่ง:</strong></td>
+                    <td>{{ $cust_address ?? '-' }}</td>
                 </tr>
             </table>
         </td>
-        <td>
+        <td valign="top">
             <table border="0" width="100%">
                 <tr>
-                    <td><strong>เลขที่:</strong></td>
+                    <td width="40%"><strong>เลขที่:</strong></td>
                     <td>{{ $po_no }}</td>
                 </tr>
                 <tr>

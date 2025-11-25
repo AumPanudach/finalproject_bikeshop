@@ -44,6 +44,7 @@ COPY . .
 # Create storage directories
 RUN mkdir -p storage/framework/{sessions,views,cache} \
     && mkdir -p storage/logs \
+    && mkdir -p storage/app/temp \
     && mkdir -p bootstrap/cache
 
 # Install PHP dependencies

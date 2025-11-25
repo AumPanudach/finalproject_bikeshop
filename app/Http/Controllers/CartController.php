@@ -91,6 +91,8 @@ return redirect('cart/view');
             
             $cust_name = $request->input('cust_name');
             $cust_email = $request->input('cust_email');
+            $cust_address = $request->input('cust_address');
+            $cust_phone = $request->input('cust_phone');
             
             if(Order::all()->last() == NULL){
                 $numpo = 1;
@@ -109,11 +111,11 @@ return redirect('cart/view');
             }
 
             // Generate HTML for PDF
-            $html_output = view('cart/complete', compact('cart_items', 'cust_name', 'cust_email',
-                'po_no', 'po_date', 'total_amount'))->render();
+            $html_output = view('cart/complete', compact('cart_items', 'cust_name', 'cust_email', 
+                'cust_address', 'cust_phone', 'po_no', 'po_date', 'total_amount'))->render();
             
             try {
-                // Create PDF
+                // Create PDF with temp directory configuration
                 $mpdf = new Mpdf([
                     'mode' => 'utf-8',
                     'format' => 'A4',
@@ -121,6 +123,7 @@ return redirect('cart/view');
                     'margin_right' => 15,
                     'margin_top' => 15,
                     'margin_bottom' => 15,
+                    'tempDir' => storage_path('app/temp'),
                 ]);
                 
                 $mpdf->WriteHTML($html_output);
@@ -150,6 +153,8 @@ return redirect('cart/view');
         
         $cust_name = $request->input('cust_name');
         $cust_email = $request->input('cust_email');
+        $cust_address = $request->input('cust_address');
+        $cust_phone = $request->input('cust_phone');
         
         if(Order::all()->last() == NULL){
             $numpo = 1;
@@ -168,6 +173,8 @@ return redirect('cart/view');
             $Order->serial_po = $po_no;
             $Order->order_name = Auth::user()->name;
             $Order->order_email = $cust_email;
+            $Order->order_address = $cust_address;
+            $Order->order_phone = $cust_phone;
             $Order->user_id = Auth::user()->id;
             $Order->status = 0;
             $Order->save();
