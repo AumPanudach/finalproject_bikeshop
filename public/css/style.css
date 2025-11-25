@@ -538,25 +538,25 @@ a:hover {
 .text-muted-soft {
     color: var(--brand-muted);
     opacity: 0.9;
-}
-
+    }
+    
 .data-empty i {
-    font-size: 2.5rem;
+        font-size: 2.5rem;
     margin-bottom: 0.75rem;
     display: inline-block;
     color: var(--brand-muted);
-}
+    }
 
 .sticky-summary {
     position: sticky;
     top: 120px;
-}
-
+    }
+    
 .filter-card {
     border-radius: var(--radius-lg);
     border: 1px solid var(--brand-border);
-}
-
+    }
+    
 .thumb-sm {
     width: 50px;
     height: 50px;
@@ -578,7 +578,7 @@ a:hover {
 .note-muted {
     font-size: 0.9rem;
     color: var(--brand-muted);
-}
+    }
 
 .text-gradient {
     background: linear-gradient(135deg, #0d6efd, #153b8a);
@@ -592,8 +592,8 @@ a:hover {
 @media (max-width: 991.98px) {
     .app-main {
         padding-top: 5.5rem;
-    }
-    
+}
+
     .hero-section {
         padding: 2rem;
     }
@@ -602,8 +602,8 @@ a:hover {
 @media (max-width: 575.98px) {
     .card-body {
         padding: 1.25rem;
-    }
-    
+}
+
     .hero-section {
         padding: 1.5rem;
     }

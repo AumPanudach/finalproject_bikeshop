@@ -122,7 +122,7 @@
     </nav>
 
     <main class="app-main">
-        @yield('content')
+            @yield('content')
     </main>
 
 
@@ -131,7 +131,7 @@
             <div>
                 <span class="fw-semibold text-dark">BikeShop</span>
                 <span class="text-muted ms-2">Premium Bicycle Store</span>
-            </div>
+                </div>
             <div class="text-muted small">
                 &copy; {{ now()->year }} BikeShop. All rights reserved.
             </div>
