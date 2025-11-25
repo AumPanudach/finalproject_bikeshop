@@ -37,8 +37,9 @@
                                 <th style="width: 80px;">รูปสินค้า</th>
                                 <th style="width: 120px;">รหัสสินค้า</th>
                                 <th>ชื่อสินค้า</th>
-                                <th style="width: 150px;" class="text-center">จำนวน</th>
-                                <th style="width: 120px;" class="text-end">ราคา</th>
+                                <th style="width: 120px;" class="text-end">ราคา/ชิ้น</th>
+                                <th style="width: 140px;" class="text-center">จำนวน</th>
+                                <th style="width: 140px;" class="text-end">ราคารวม</th>
                                 <th style="width: 60px;"></th>
                             </tr>
                         </thead>
@@ -54,6 +55,7 @@
                                     </td>
                                     <td class="text-muted">{{ $c['code'] }}</td>
                                     <td class="fw-medium">{{ $c['name'] }}</td>
+                                    <td class="text-end text-muted">฿{{ number_format($c['price'], 2) }}</td>
                                     <td>
                                         <input type="number" 
                                                class="form-control text-center" 
@@ -64,7 +66,7 @@
                                                onChange="updateCart({{ $c['id'] }}, this)"
                                                style="max-width: 100px; margin: 0 auto;">
                                     </td>
-                                    <td class="text-end fw-semibold">฿{{ number_format($item_total, 2) }}</td>
+                                    <td class="text-end fw-bold text-primary">฿{{ number_format($item_total, 2) }}</td>
                                     <td class="text-center">
                                         <a href="{{ URL::to('cart/delete/'.$c['id']) }}" 
                                            class="btn btn-sm btn-outline-danger"
@@ -103,8 +105,9 @@
                                          style="width: 80px; height: 80px; object-fit: cover;">
                                     <div class="flex-grow-1">
                                         <h6 class="mb-1 fw-semibold">{{ $c['name'] }}</h6>
-                                        <small class="text-muted d-block mb-2">รหัส: {{ $c['code'] }}</small>
-                                        <div class="text-primary fw-bold">฿{{ number_format($item_total, 2) }}</div>
+                                        <small class="text-muted d-block">รหัส: {{ $c['code'] }}</small>
+                                        <small class="text-muted d-block mb-2">฿{{ number_format($c['price'], 2) }} / ชิ้น</small>
+                                        <div class="text-primary fw-bold fs-5">฿{{ number_format($item_total, 2) }}</div>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
