@@ -44,8 +44,8 @@
         @endif
 
         <!-- Main Form -->
-        <div class="row">
-            <div class="col-lg-8">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
                 <div class="card shadow-custom border-0 mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">
@@ -76,15 +76,19 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="card shadow-custom border-0 mt-4">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <button type="button" onclick="location.href='/category'" class="btn btn-outline-secondary btn-lg">
-                        <i class="fas fa-times me-2"></i>ยกเลิก
-                    </button>
-                    <button type="submit" class="btn btn-success btn-lg">
-                        <i class="fas fa-save me-2"></i>บันทึกข้อมูล
-                    </button>
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow-custom border-0 mt-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <button type="button" onclick="location.href='/category'" class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-times me-2"></i>ยกเลิก
+                            </button>
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-save me-2"></i>บันทึกข้อมูล
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
